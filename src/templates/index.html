@@ -1,3 +1,55 @@
-<h1>
-  hello from index.html
-</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HellaTypo</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600;700&display=swap');
+
+    body {
+      background-color: #282a36;
+      color: #bd93f9;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 1.5rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #typing-test {
+      max-width: 980px;
+      padding-inline: 3rem;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <div id="typing-test"> // -- PLACEHOLDER -- // </div>
+  </main>
+</body>
+
+<script>
+  function sanitizeText(text) {
+    return text
+      .replace(/[^a-zA-Z0-9]/g, ' ')
+      .toLowerCase();
+  }
+
+  const typingTest = document.getElementById('typing-test');
+  const sourceText = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit ipsum ex eveniet qui quisquam consequatur, culpa placeat veniam quis, quidem enim. Harum enim dolorum libero vel nemo ratione minus accusantium?"
+
+  typingTest.innerText = sanitizeText(sourceText);
+</script>
+
+</html>
