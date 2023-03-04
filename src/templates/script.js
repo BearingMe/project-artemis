@@ -54,8 +54,6 @@ export class ElementHandler {
   }
 
   createSpanList(list, className) {
-    console.log(list)
-
     return list.map((text) => this.#createSpan(text, className));
   }
 

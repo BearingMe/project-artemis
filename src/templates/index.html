@@ -30,6 +30,18 @@
       max-width: 980px;
       padding-inline: 3rem;
     }
+
+    .correct {
+      color: #f2f2f2;
+    }
+
+    .neutral {
+      color: #bd93f9;
+    }
+
+    .incorrect {
+      color: #f758a0;
+    }
   </style>
 </head>
 
@@ -54,7 +66,110 @@
     const spanList = elementHandler.createSpanList(wordList, "word");
 
     elementHandler.appendSpanList(spanList);
+
+    // gambiarra malaca pra testar o código
+    const wordSpanList = document.querySelectorAll(".word");
+
+    wordSpanList.forEach((wordSpan) => {
+      const text = wordSpan.innerText;
+      const textList = text.split("");
+
+      const spanList = textList.map((letter) => {
+        const span = document.createElement("span");
+
+        span.innerText = letter;
+        span.classList.add("letter");
+
+        return span;
+      });
+
+      wordSpan.innerHTML = "";
+      spanList.forEach((span) => wordSpan.appendChild(span));
+    });
+    // fim da gambiarra
+
+    // criar elemento
+    // injetar texto
+    // pegar elemento com querySelectorAll
+    // percorrer lista
+    // pegar texto
+    // limpar elemento
+    // separar texto por espaços
+    // criar lista de spans
+    // adicionar spans ao elemento
   }
+</script>
+
+<script>
+  const textContainer = document.querySelector("#typing-test");
+
+  let currentWord = 0;
+  let currentLetter = 0;
+
+  addEventListener("keydown", (event) => {
+    const key = event.key;
+    const word = textContainer.children[currentWord];
+    const letter = word.children[currentLetter];
+
+    console.log(word, letter);
+
+    // check backspace
+    if (key === "Backspace") {
+      if (currentLetter === 0) {
+        currentWord--;
+        currentLetter = textContainer.children[currentWord].children.length - 1;
+      } else {
+        currentLetter--;
+      }
+
+      const letter = textContainer.children[currentWord].children[currentLetter];
+
+      letter.classList.remove("correct");
+      letter.classList.remove("incorrect");
+      letter.classList.add("neutral");
+
+      return;
+    }
+
+    // check space
+    if (key === " ") {
+      if (currentLetter === 0) {
+        return;
+      }
+
+      // make all letters incorrect
+      for (let i = currentLetter; i < word.children.length; i++) {
+        const letter = word.children[i];
+
+        letter.classList.remove("correct");
+        letter.classList.remove("neutral");
+        letter.classList.add("incorrect");
+      }
+
+      currentWord++;
+      currentLetter = 0;
+
+      return;
+    }
+
+    if (key === letter.textContent) {
+      letter.classList.remove("incorrect");
+      letter.classList.remove("neutral");
+      letter.classList.add("correct");
+      currentLetter++;
+    } else {
+      letter.classList.remove("correct");
+      letter.classList.remove("neutral");
+      letter.classList.add("incorrect");
+      currentLetter++;
+    }
+
+    if (currentLetter === word.children.length) {
+      currentWord++;
+      currentLetter = 0;
+    }
+  });
+
 </script>
 
 </html>
