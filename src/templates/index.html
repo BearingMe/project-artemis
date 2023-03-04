@@ -39,17 +39,22 @@
   </main>
 </body>
 
-<script>
-  function sanitizeText(text) {
-    return text
-      .replace(/[^a-zA-Z0-9]/g, ' ')
-      .toLowerCase();
+<script type="module">
+  import { TextHandler, ElementHandler } from "./script.js"
+
+  window.addEventListener("load", loadSourceText);
+
+  function loadSourceText() {
+    const sourceText = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit ipsum ex eveniet qui quisquam consequatur, culpa placeat veniam quis, quidem enim. Harum enim dolorum libero vel nemo ratione minus accusantium?";
+
+    const textHandler = new TextHandler(sourceText);
+    const elementHandler = new ElementHandler("#typing-test");
+
+    const wordList = textHandler.getWordList();
+    const spanList = elementHandler.createSpanList(wordList, "word");
+
+    elementHandler.appendSpanList(spanList);
   }
-
-  const typingTest = document.getElementById('typing-test');
-  const sourceText = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit ipsum ex eveniet qui quisquam consequatur, culpa placeat veniam quis, quidem enim. Harum enim dolorum libero vel nemo ratione minus accusantium?"
-
-  typingTest.innerText = sanitizeText(sourceText);
 </script>
 
 </html>
