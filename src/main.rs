@@ -1,12 +1,9 @@
-#[rocket::get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
-}
+use rocket::fs::FileServer;
 
 #[rocket::launch]
 fn rocket() -> _ {
     let rocket = rocket::build();
-    let routes = rocket::routes![index];
+    let templates = FileServer::from("./src/templates");
 
-    rocket.mount("/", routes)
+    rocket.mount("/", templates)
 }
