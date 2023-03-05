@@ -31,6 +31,10 @@
       padding-inline: 3rem;
     }
 
+    .letter {
+      position: relative;
+    }
+
     .correct {
       color: #f2f2f2;
     }
@@ -42,6 +46,30 @@
     .incorrect {
       color: #f758a0;
     }
+
+    .cursor::before {
+      content: "|";
+      color: #f2f2f2;
+      animation: cursor 1s infinite;
+      display: inline-block;
+      position: absolute;
+      bottom: 3px;
+      left: -5px;
+    }
+
+    @keyframes cursor {
+      0% {
+        opacity: 0;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 
@@ -52,9 +80,9 @@
 </body>
 
 <script type="module">
-  import { TextHandler, ElementHandler } from "./script.js"
+  import { TextHandler, ElementHandler, CursorHandler } from "./script.js"
 
-  window.addEventListener("load", loadSourceText);
+  loadSourceText();
 
   function loadSourceText() {
     const sourceText = "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit ipsum ex eveniet qui quisquam consequatur, culpa placeat veniam quis, quidem enim. Harum enim dolorum libero vel nemo ratione minus accusantium?";
@@ -88,6 +116,12 @@
     });
     // fim da gambiarra
 
+    document.
+      querySelector("#typing-test").
+      querySelector(".word").
+      querySelector(".letter").
+      classList.add("cursor");
+
     // criar elemento
     // injetar texto
     // pegar elemento com querySelectorAll
@@ -98,78 +132,25 @@
     // criar lista de spans
     // adicionar spans ao elemento
   }
-</script>
 
-<script>
-  const textContainer = document.querySelector("#typing-test");
 
-  let currentWord = 0;
-  let currentLetter = 0;
+
+  const textWrapper = document.querySelector("#typing-test");
+  const textCursorHandler = new CursorHandler(textWrapper);
 
   addEventListener("keydown", (event) => {
-    const key = event.key;
-    const word = textContainer.children[currentWord];
-    const letter = word.children[currentLetter];
+    const { key } = event;
 
-    console.log(word, letter);
+    const next = () => textCursorHandler.next();
+    const previous = () => textCursorHandler.previous();
 
-    // check backspace
-    if (key === "Backspace") {
-      if (currentLetter === 0) {
-        currentWord--;
-        currentLetter = textContainer.children[currentWord].children.length - 1;
-      } else {
-        currentLetter--;
-      }
+    const func = {
+      "ArrowLeft": previous,
+      "ArrowRight": next,
+    };
 
-      const letter = textContainer.children[currentWord].children[currentLetter];
-
-      letter.classList.remove("correct");
-      letter.classList.remove("incorrect");
-      letter.classList.add("neutral");
-
-      return;
-    }
-
-    // check space
-    if (key === " ") {
-      if (currentLetter === 0) {
-        return;
-      }
-
-      // make all letters incorrect
-      for (let i = currentLetter; i < word.children.length; i++) {
-        const letter = word.children[i];
-
-        letter.classList.remove("correct");
-        letter.classList.remove("neutral");
-        letter.classList.add("incorrect");
-      }
-
-      currentWord++;
-      currentLetter = 0;
-
-      return;
-    }
-
-    if (key === letter.textContent) {
-      letter.classList.remove("incorrect");
-      letter.classList.remove("neutral");
-      letter.classList.add("correct");
-      currentLetter++;
-    } else {
-      letter.classList.remove("correct");
-      letter.classList.remove("neutral");
-      letter.classList.add("incorrect");
-      currentLetter++;
-    }
-
-    if (currentLetter === word.children.length) {
-      currentWord++;
-      currentLetter = 0;
-    }
+    func[key] && func[key]();
   });
-
 </script>
 
 </html>
