@@ -1,29 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+import { TextHandler } from "./text_handler.js"
+import { ElementHandler } from "./element_handler.js"
+import { CursorHandler } from "./cursor_handler.js"
+import { InputHandler } from "./input_handler.js"
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HellaTypo</title>
-
-  <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-  <main>
-    <div id="typing-test"> // -- PLACEHOLDER -- // </div>
-  </main>
-</body>
-
-<script type="module">
-  import {
-    TextHandler,
-    ElementHandler,
-    CursorHandler,
-    InputHandler,
-  } from "./script.js"
-
+export function main() {
   loadSourceText();
 
   function loadSourceText() {
@@ -85,6 +65,4 @@
       inputHandler.space();
     }
   });
-</script>
-
-</html>
+}

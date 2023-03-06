@@ -3,7 +3,7 @@ use rocket::fs::FileServer;
 #[rocket::launch]
 fn rocket() -> _ {
     let rocket = rocket::build();
-    let templates = FileServer::from("./src/templates");
+    let pages = FileServer::from("./src/pages");
 
-    rocket.mount("/", templates)
+    rocket.mount("/", pages)
 }
