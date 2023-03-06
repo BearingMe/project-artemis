@@ -17,7 +17,12 @@
 </body>
 
 <script type="module">
-  import { TextHandler, ElementHandler, CursorHandler } from "./script.js"
+  import {
+    TextHandler,
+    ElementHandler,
+    CursorHandler,
+    InputHandler,
+  } from "./script.js"
 
   loadSourceText();
 
@@ -58,35 +63,27 @@
       querySelector(".word").
       querySelector(".letter").
       classList.add("cursor");
-
-    // criar elemento
-    // injetar texto
-    // pegar elemento com querySelectorAll
-    // percorrer lista
-    // pegar texto
-    // limpar elemento
-    // separar texto por espaços
-    // criar lista de spans
-    // adicionar spans ao elemento
   }
 
-
-
   const textWrapper = document.querySelector("#typing-test");
-  const textCursorHandler = new CursorHandler(textWrapper);
+
+  const cursorHandler = new CursorHandler(textWrapper);
+  const inputHandler = new InputHandler(cursorHandler);
 
   addEventListener("keydown", (event) => {
     const { key } = event;
 
-    const next = () => textCursorHandler.next();
-    const previous = () => textCursorHandler.previous();
+    if (key.match(/^[a-zA-Z]$/)) {
+      inputHandler.letter(key);
+    }
 
-    const func = {
-      "ArrowLeft": previous,
-      "ArrowRight": next,
-    };
+    if (key === "Backspace") {
+      inputHandler.backspace();
+    }
 
-    func[key] && func[key]();
+    if (key === " ") {
+      inputHandler.space();
+    }
   });
 </script>
 

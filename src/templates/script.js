@@ -68,6 +68,8 @@ export class CursorHandler {
 
     this.currentLetterIndex = 0;
     this.currentWordIndex = 0;
+
+    this.currentCursorPosition = textWrapper.children[0].children[0];
   }
 
   #checkDOMState() {
@@ -81,7 +83,7 @@ export class CursorHandler {
   }
 
   #checkState() {
-    const { currentWord, currentLetter } = this.#checkDOMState();
+    const { currentWord } = this.#checkDOMState();
 
     const isFirstLetter = (this.currentLetterIndex === 0);
     const isLastLetter = (this.currentLetterIndex === currentWord.children.length - 1);
@@ -131,9 +133,11 @@ export class CursorHandler {
     state
       ? addCursor()
       : removeCursor();
+
+    this.currentCursorPosition = element;
   }
 
-  previous() {
+  prev() {
     const { isStartOfText, isFirstLetter } = this.#checkState();
 
     if (isStartOfText) return;
@@ -159,5 +163,43 @@ export class CursorHandler {
       : this.#goToNextLetter();
 
     this.#activateCursor(true);
+  }
+}
+
+export class InputHandler {
+  constructor(cursorHandler) {
+    this.cursorHandler = cursorHandler;
+  }
+
+  get currentPos() {
+    return this.cursorHandler.currentCursorPosition;
+  }
+
+  get currentLetter() {
+    return this.cursorHandler.currentCursorPosition.innerText;
+  }
+
+  letter(key) {
+    console.log(key, this.currentLetter);
+
+    this.currentPos.className = (key === this.currentLetter)
+      ? "letter correct"
+      : "letter incorrect";
+
+    this.cursorHandler.next();
+  }
+
+  space() {
+    this.currentLetter === " "
+      ? this.currentPos.className = "letter correct"
+      : this.currentPos.className = "letter incorrect";
+
+    this.cursorHandler.next();
+  }
+
+  backspace() {
+    this.cursorHandler.prev();
+
+    document.querySelector(".cursor").className = "letter cursor";
   }
 }

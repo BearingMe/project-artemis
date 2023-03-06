@@ -23,14 +23,11 @@ main {
 
 .letter {
   position: relative;
+  color: #bd93f9;
 }
 
 .correct {
   color: #f2f2f2;
-}
-
-.neutral {
-  color: #bd93f9;
 }
 
 .incorrect {
